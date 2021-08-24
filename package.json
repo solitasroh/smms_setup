@@ -72,6 +72,9 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.57",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.57",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/styled-components": "^5.1.12",
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
     "babel-loader": "^8.2.2",
@@ -87,7 +90,9 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "modbus-serial": "^8.0.3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "styled-component": "^2.8.0"
   }
 }
