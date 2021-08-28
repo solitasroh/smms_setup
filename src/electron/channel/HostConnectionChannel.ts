@@ -1,28 +1,27 @@
-import { ModbusTcpService } from "./../services/modbus-service";
-import { IpcRequest } from "../ipc/ipcRequest";
-import { IpcChannel } from "../ipc/ipcChannel";
+import { ModbusTcpService } from '../services/modbus-service';
+import { IpcRequest } from '../ipc/ipcRequest';
+import { IpcChannel } from '../ipc/ipcChannel';
 
 export interface HostConnectChannelArg extends IpcRequest {
   ip: string;
   port?: number;
 }
 
-export class HostConnectionChannel
-  implements IpcChannel<HostConnectChannelArg>
-{
+export class HostConnectionChannel implements IpcChannel<HostConnectChannelArg> {
   private service: ModbusTcpService;
+
+  private name: string;
 
   constructor(service: ModbusTcpService) {
     this.service = service;
-  }
-  getName(): string {
-    return "host-connect";
+    this.name = 'host-connect';
   }
 
-  async handle(
-    event: Electron.IpcMainEvent,
-    request: HostConnectChannelArg
-  ): Promise<void> {
+  getName(): string {
+    return this.name;
+  }
+
+  async handle(event: Electron.IpcMainEvent, request: HostConnectChannelArg): Promise<void> {
     const { ip, port } = request;
 
     const connected = await this.service.connect({ ip, port });
