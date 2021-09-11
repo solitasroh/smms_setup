@@ -23,7 +23,7 @@ export class HostConnectionChannel implements IpcChannel<HostConnectChannelArg> 
 
   async handle(event: Electron.IpcMainEvent, request: HostConnectChannelArg): Promise<void> {
     const { ip, port } = request;
-
+    console.log(request);
     const connected = await this.service.connect({ ip, port });
 
     event.sender.send(request.responseChannel, {

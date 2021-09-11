@@ -2,9 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 100%;
+  width: 200px;
+  height: 100%;
   display: flex;
-  flex-direction: row;
   background-color: #056674;
   flex-wrap: nowrap;
   justify-content: flex-end;
