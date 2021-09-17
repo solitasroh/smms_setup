@@ -1,4 +1,4 @@
-import ModbusRTU from "modbus-serial";
+import { ModbusService } from './ModbusService';
 
 export interface connectionConfig {
   ip: string;
@@ -6,26 +6,12 @@ export interface connectionConfig {
   timeout?: number;
 }
 
-export abstract class ModbusService {
-  readonly client: ModbusRTU;
-
-  constructor() {
-    this.client = new ModbusRTU();
-  }
-  abstract read(address: number, len: number): number[];
-  abstract write(address: number, data: number[]): void;
-}
-
 export class ModbusTcpService extends ModbusService {
-  constructor() {
-    super();
-  }
+  closed: boolean;
 
-  async connect({
-    ip,
-    port = 502,
-    timeout = 5000,
-  }: connectionConfig): Promise<boolean> {
+  connected: boolean;
+
+  async connect({ ip, port = 502, timeout = 5000 }: connectionConfig): Promise<boolean> {
     try {
       if (this.client.isOpen) {
         this.client.close(this.onClose);
@@ -36,7 +22,7 @@ export class ModbusTcpService extends ModbusService {
         {
           port,
         },
-        this.onConnected
+        this.onConnected,
       );
 
       return true;
@@ -56,21 +42,20 @@ export class ModbusTcpService extends ModbusService {
     }
   }
 
-  read(address: number, len: number): number[] | null {
-    console.log(` address: ${address} length: ${len}`);
-
-    return null;
+  async read(address: number, len: number): Promise<number[]> {
+    const result = await this.client.readHoldingRegisters(address, len);
+    return result.data;
   }
 
-  write(address: number, data: number[]): void {
-    throw new Error("Method not implemented.");
+  async write(address: number, data: number[]): Promise<void> {
+    await this.client.writeRegisters(address, data);
   }
 
   private onClose() {
-    console.log("server closed");
+    this.closed = true;
   }
 
   private onConnected() {
-    console.log("connected");
+    this.connected = true;
   }
 }
